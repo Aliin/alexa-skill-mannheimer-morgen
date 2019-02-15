@@ -15,12 +15,12 @@ def events():
     speech = render_template("events")
     return statement(speech)
 
-@ask.intent("ArticleIntent")
-def article():
-    NewsFeed = feedparser.parse("https://xmedias2.morgenweb.de/feed/202-alexa-advanced-de-kall.xml")
-    entry = NewsFeed.entries[1]
-    speech = entry["description"]
-    return statement(speech)
+# @ask.intent("ArticleIntent")
+# def article():
+#     NewsFeed = feedparser.parse("https://xmedias2.morgenweb.de/feed/202-alexa-advanced-de-kall.xml")
+#     entry = NewsFeed.entries[1]
+#     speech = entry["description"]
+#     return statement(speech)
 
 @ask.intent("DummyIntent", convert={})
 def dummy_intent(name):
