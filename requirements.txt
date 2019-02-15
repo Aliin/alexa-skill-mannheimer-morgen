@@ -1,0 +1,3 @@
+flask-ask
+requests
+pip==9.0.1
