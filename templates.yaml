@@ -1,1 +1,2 @@
-welcome: "Hallo, wie ich sehe programmierst Du für den Mannheimer morgen. Wie heisst Du denn?"
+welcome: "Willkommen beim Mannheimer Morgen. Informiere dich über aktuelle lokale Events oder höre dir die neuesten Nachrichten an. Was möchtest Du wissen?"
+events: "<speak>{{ events }}</speak>"
