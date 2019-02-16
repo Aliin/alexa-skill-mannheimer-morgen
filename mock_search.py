@@ -1,5 +1,6 @@
 import json
 import pdb
+import database
 
 class MockSearch:
     mock_data = [{'title': 'Merkel rechnet in München mit Trump ab', 'summary': 'Frontalangriff der Kanzlerin auf US-Präsident Donald Trump: Angela Merkel hat auf der Münchner Sicherheitskonferenz die US-Politik scharf kritisiert.', 'tags': 'trump'}, {'title': 'Großer Widerstand gegen Trumps Notstandserklärung', 'summary': 'US-Präsident Donald Trump stößt mit seiner Erklärung eines Nationalen Notstandes an der Grenze zu Mexiko auf großen Widerstand. Mehrere prominente Demokraten warfen Trump einen Angriff auf die Verfassung vor.', 'tags': 'trump'},]
@@ -21,6 +22,14 @@ class MockSearch:
         print(self.mock_result())
 
     def save_search(self):
-        print(f'mock saved the search for {self.term} of user {self.user_id}')
+        connection = database.TestDB().connection
 
-MockSearch('trump', 'uuid00001').mock_result()
+        sql = ''' INSERT INTO user_tags(USER_UUID, TAG)
+              VALUES(?,?) '''
+        connection.execute(sql, (self.user_id, self.term))
+
+        connection.commit()
+        connection.close()
+        print(f'saved the search for {self.term} of user {self.user_id}')
+
+# MockSearch('trump', 'uuid00001').mock_result()
