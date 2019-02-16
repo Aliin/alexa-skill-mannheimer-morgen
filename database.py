@@ -3,9 +3,9 @@ import sqlite3
 class TestDB:
     def __init__(self):
         self.database = 'mm_test.db'
-        self.connection = connect(self)
+        self.connection = self.openConnect()
 
-    def connect(self):
+    def openConnect(self):
         print("Opened database successfully")
         return sqlite3.connect(self.database)
 
@@ -14,6 +14,5 @@ class TestDB:
          (ID INT PRIMARY KEY        NOT NULL,
          USER_UUID      CHAR(255)   NOT NULL,
          TAG            CHAR(255)   NOT NULL);''')
-        print("Table created successfully")
+        print("Table if not existed created successfully")
         self.connection.close()
-
