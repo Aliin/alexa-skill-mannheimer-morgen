@@ -1,5 +1,3 @@
-import json
-import pdb
 import database
 
 class SuggestedNews:

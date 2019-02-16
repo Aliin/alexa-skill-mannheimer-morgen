@@ -1,3 +1,28 @@
 welcome: "Willkommen beim Mannheimer Morgen. Informiere dich über aktuelle lokale Events oder höre dir die neuesten Nachrichten an. Was möchtest Du wissen?"
-events: "<speak>{{ events }}</speak>"
+welcome_respeech: "Sage beispielsweise: Was läuft heute im Kino?"
+hint_launched: "was läuft heute in Mannheim im Kino?"
+welcome_display: ""
+
 news: "<speak> {{news}} </speak>"
+
+events: "<speak>{{ events }}</speak>"
+events_respeech: "Möchtest Du mehr hören?"
+
+rubrik_default: "Das Wichtigste"
+title_news: "Nachrichten"
+title_events: "Veranstaltungen"
+
+no_news_found: "Es wurden keine Nachrichten gefunden"
+no_events_found: "Es wurden keine Veranstaltungen gefunden."
+no_suggestions: "Keine Vorschläge gefunden."
+all_entries: "Das waren alle Einträge"
+error: "Est ist ein Fehler unterlaufen"
+
+bye: "Tschüss"
+cancel: "Tschüss"
+stop: "Tschüss"
+
+help: "Der Mannheimer Morgen informiert dich über aktuelle lokale Events und Nachrichten. Sage beispielsweise: Was sind die neuesten Nachrichten über Sport?"
+help_respeech: "Sage beispielsweise: Was läuft heute in der Oper in Mannheim?"
+fallback: "Ich habe Dich leider nicht verstanden. Frage den Mannheimer Morgen beispielsweise was die neuesten Nachrichten sind. Was möchtest Du wissen?"
+fallback_respeech: "Frage beispielsweise: Was läuft heute im Theater in Mannheim?"

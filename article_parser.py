@@ -1,6 +1,5 @@
 import feedparser
 from html.parser import HTMLParser
-import json
 
 class StolenFromStackoverflow(HTMLParser):
     def __init__(self):
@@ -87,9 +86,6 @@ class FeedReader:
 
     def article(self, entry):
         return Article(entry, self.fields).get_object()
-
-    def runTest(self):
-        print(self.results())
 
     def results(self):
         return self.getArticleList()
