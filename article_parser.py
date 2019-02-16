@@ -88,18 +88,8 @@ class FeedReader:
     def article(self, entry):
         return Article(entry, self.fields).get_object()
 
-    def printArticle(self, entry):
-        print(self.tags(entry))
-        print(entry.keys())
-        print(entry.title)
-        print(self.strip_tags(entry.summary))
-        print(entry.published)
-
     def runTest(self):
         print(self.results())
 
     def results(self):
         return self.getArticleList()
-
-
-

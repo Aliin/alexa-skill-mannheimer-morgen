@@ -12,13 +12,8 @@ class MockSearch:
         self.save_search()
 
     def mock_result(self):
-        print(self.user_id)
-        print(self.search_url)
         result = self.mock_data
         return result
-
-    def run_test(self):
-        print(self.mock_result())
 
     def save_search(self):
         connection = database.TestDB().connection
@@ -29,6 +24,3 @@ class MockSearch:
 
         connection.commit()
         connection.close()
-        print(f'saved the search for {self.term} of user {self.user_id}')
-
-# MockSearch('trump', 'uuid00001').mock_result()

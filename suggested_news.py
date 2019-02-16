@@ -16,14 +16,11 @@ class SuggestedNews:
         return self.find_latest_tag()
 
     def mock_result(self):
-        print(self.user_id)
-        print(self.search_url)
-        print(self.search_term)
         if self.search_term:
             result = self.mock_data.get(self.search_term, False)
             return result
-        else
-        return False
+        else:
+            return False
 
     def find_latest_tag(self):
         rows = database.TestDB().user_tags().fetchall()
@@ -36,4 +33,3 @@ class SuggestedNews:
             return(res_list[-1])
         else:
             return False
-

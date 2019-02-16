@@ -6,7 +6,6 @@ class TestDB:
         self.connection = self.openConnect()
 
     def openConnect(self):
-        print("Opened database successfully")
         return sqlite3.connect(self.database)
 
     def setup(self):
@@ -14,7 +13,6 @@ class TestDB:
          (ID INTEGER PRIMARY KEY AUTOINCREMENT,
          USER_UUID      CHAR(255)   NOT NULL,
          TAG            CHAR(255)   NOT NULL);''')
-        print("Table if not existed created successfully")
         self.connection.close()
 
     def drop_user_tags(self):
