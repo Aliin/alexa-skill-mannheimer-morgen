@@ -1,5 +1,4 @@
 import requests
-from flask_ask import Ask, statement, question, session
 
 
 def events_api(params):

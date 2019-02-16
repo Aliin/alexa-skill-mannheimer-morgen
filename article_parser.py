@@ -1,7 +1,5 @@
 import feedparser
 from html.parser import HTMLParser
-import pdb
-import time
 import json
 
 class StolenFromStackoverflow(HTMLParser):
@@ -101,8 +99,7 @@ class FeedReader:
         print(self.results())
 
     def results(self):
-        return json.dumps(self.getArticleList())
+        return self.getArticleList()
 
-FeedReader('Das Wichtigste', 3).runTest()
 
-# How to use: FeedReader('Kommentare', 5).results()
+

@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session, request, context
 from api import events_api
+import article_parser
 import random
 from datetime import datetime
 
@@ -22,6 +23,37 @@ def launched():
         text = {"primaryText": {"type": "RichText", "text": ""}, "secondaryText": {"type": "RichText", "text": ""}}
         return question(speech).display_render(template="BodyTemplate6", text=text, background_image_url=background, hintText=hint)
     return question(speech)
+
+
+@ask.intent("NewsIntent")
+def news():
+    rubrik_default = "Das Wichtigste"
+    try:
+        rubrik = request["intent"]["slots"]["nachrichten_rubrik"]["resolutions"]["resolutionsPerAuthority"][0]["values"][0]["value"]["name"]
+    except:
+        rubrik = rubrik_default
+
+    try:
+        news_raw_data = article_parser.FeedReader(rubrik, 4).results()
+        news = create_string_of(news_raw_data)
+        speech = render_template("news", news=news)
+        if context.System.device.supportedInterfaces.Display is None:
+            return statement(speech)
+        else:
+            title = "Nachrichten"
+            items = get_news_items(news_raw_data)
+
+            return statement(speech).list_display_render(template="ListTemplate1", backButton="HIDDEN", title=title,
+                                                        listItems=items)
+    except:
+        speech = "Es wurden keine Nachrichten gefunden"
+        if context.System.device.supportedInterfaces.Display is None:
+            return statement(speech)
+        else:
+            text = {"primaryText": {"type": "RichText", "text": speech}}
+            return statement(speech).display_render(template="BodyTemplate6", text=text, background_image_url=background)
+
+
 
 @ask.intent("EventsIntent")
 def events(datum, plz, ort, suche):
@@ -178,6 +210,30 @@ def get_items(events):
         items.append(item)
 
     return items
+
+def create_string_of(news_raw_data):
+    news = ""
+    for index, new in enumerate(news_raw_data):
+        if index == 0:
+            news = "{} {}<break time='0.3s'/>{}".format(intro, new["title"], new["summary"])
+        elif index < 3:
+            news = "{} {} {}<break time='0.3s'/>{}".format(news, neutral_response, new["title"], new["summary"])
+        else:
+            news = "{} {} {}<break time='0.3s'/>{} {}".format(news, neutral_response, new["title"], new["summary"], outro)
+
+    return news
+
+def get_news_items(news):
+    items = []
+    for new in news:
+        textcontent = {"secondaryText": {"type": "RichText", "text": new["title"]}}
+        item = {"textContent": textcontent}
+        items.append(item)
+
+    return items
+
+
+
 
 
 if __name__ == '__main__':
