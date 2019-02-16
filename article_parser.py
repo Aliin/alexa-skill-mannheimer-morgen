@@ -89,6 +89,6 @@ class FeedReader:
         return Article(entry, self.fields).get_object()
 
     def results(self):
-        if !self.feed_url:
+        if self.feed_url == False:
             return False
         return self.getArticleList()
