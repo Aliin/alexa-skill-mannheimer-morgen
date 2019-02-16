@@ -71,7 +71,7 @@ class FeedReader:
     def __init__(self, category, numberArticles):
         self.category = category
         self.numberArticles = numberArticles
-        self.feed_url = self.overall_feeds[category] or self.regional_feeds[category]
+        self.feed_url = self.overall_feeds.get(category, False) or self.regional_feeds.get(category, False)
 
     def getFeed(self):
         return feedparser.parse(self.feed_url)
