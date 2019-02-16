@@ -2,6 +2,7 @@ import feedparser
 from html.parser import HTMLParser
 import pdb
 import time
+import json
 
 class StolenFromStackoverflow(HTMLParser):
     def __init__(self):
@@ -13,6 +14,24 @@ class StolenFromStackoverflow(HTMLParser):
         self.fed.append(d)
     def get_data(self):
         return ''.join(self.fed)
+
+class Article:
+    def __init__(self, entry, fields):
+        self.entry = entry
+        self.fields = fields
+
+    def normalize(self, html):
+        s = StolenFromStackoverflow()
+        try:
+            s.feed(html)
+            return s.get_data()
+        except TypeError:
+            return html
+
+    def get_object(self):
+        article = {}
+        for field in fields:
+            article[field] = self.normalize(entry[field])
 
 class FeedReader:
     overall_feeds = {
@@ -37,10 +56,15 @@ class FeedReader:
             'TSG 1899 Hoffenheim': 'http://www.morgenweb.de/feed/54-rss-hoffenheim.xml'
     }
 
+    other_feeds = {
+            'Startseite': 'https://www.morgenweb.de/feed/201-alexa-advanced-mm-startseite.xml'
+            'News Ticker': ''
+            }
+
     def __init__(self, category, numberArticles):
         self.category = category
         self.numberArticles = numberArticles
-        self.feed_url = self.overall_feeds[category] or self.regional_feeds[category]
+        self.feed_url = self.overall_feeds[category] or self.regional_feeds[category] or self.other_feeds[category]
 
     def strip_tags(self, html):
         s = StolenFromStackoverflow()
@@ -51,17 +75,19 @@ class FeedReader:
             return html
 
     def getFeed(self):
-        # pdb.set_trace()
         return feedparser.parse(self.feed_url)
 
     def getEntries(self):
         return self.getFeed().entries[:self.numberArticles]
 
-    def printEntry(self, entry):
+    def tags(self, entry):
         tags = ""
         for tag in entry["tags"]:
             tags += tag["term"]
-        print(tags)
+        return tags
+
+    def printEntry(self, entry):
+        print(self.tags(entry))
         print(entry.keys())
         print(entry.title)
         print(self.strip_tags(entry.summary))
