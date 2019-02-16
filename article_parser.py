@@ -98,7 +98,11 @@ class FeedReader:
         print(entry.published)
 
     def runTest(self):
-        feed = self.getFeed()
-        print(self.getArticleList())
+        print(self.results())
 
-reader = FeedReader('Das Wichtigste', 3).runTest()
+    def results(self):
+        return json.dumps(self.getArticleList())
+
+FeedReader('Das Wichtigste', 3).runTest()
+
+# How to use: FeedReader('Kommentare', 5).results()
