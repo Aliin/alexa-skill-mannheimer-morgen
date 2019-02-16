@@ -30,10 +30,24 @@ class Article:
 
     def get_object(self):
         article = {}
-        for field in fields:
-            article[field] = self.normalize(entry[field])
+        for field in self.fields:
+            if field not in self.entry.keys():
+                next
+            elif field == 'tags':
+                article[field] = self.tags()
+            else:
+                article[field] = self.normalize(self.entry[field])
+        return article
+
+    def tags(self):
+        tags = ""
+        for tag in self.entry["tags"]:
+            tags += tag["term"]
+        return tags
 
 class FeedReader:
+    fields = ['title', 'summary', 'tags']
+
     overall_feeds = {
             'Das Wichtigste': 'http://www.morgenweb.de/feed/146-rss-das-wichtigste.xml',
             'Sport': 'http://www.morgenweb.de/feed/50-rss-sport.xml',
@@ -56,23 +70,10 @@ class FeedReader:
             'TSG 1899 Hoffenheim': 'http://www.morgenweb.de/feed/54-rss-hoffenheim.xml'
     }
 
-    other_feeds = {
-            'Startseite': 'https://www.morgenweb.de/feed/201-alexa-advanced-mm-startseite.xml'
-            'News Ticker': ''
-            }
-
     def __init__(self, category, numberArticles):
         self.category = category
         self.numberArticles = numberArticles
-        self.feed_url = self.overall_feeds[category] or self.regional_feeds[category] or self.other_feeds[category]
-
-    def strip_tags(self, html):
-        s = StolenFromStackoverflow()
-        try:
-            s.feed(html)
-            return s.get_data()
-        except TypeError:
-            return html
+        self.feed_url = self.overall_feeds[category] or self.regional_feeds[category]
 
     def getFeed(self):
         return feedparser.parse(self.feed_url)
@@ -80,13 +81,16 @@ class FeedReader:
     def getEntries(self):
         return self.getFeed().entries[:self.numberArticles]
 
-    def tags(self, entry):
-        tags = ""
-        for tag in entry["tags"]:
-            tags += tag["term"]
-        return tags
+    def getArticleList(self):
+        articleList = []
+        for entry in self.getEntries():
+            articleList.append(self.article(entry))
+        return articleList
 
-    def printEntry(self, entry):
+    def article(self, entry):
+        return Article(entry, self.fields).get_object()
+
+    def printArticle(self, entry):
         print(self.tags(entry))
         print(entry.keys())
         print(entry.title)
@@ -95,7 +99,6 @@ class FeedReader:
 
     def runTest(self):
         feed = self.getFeed()
-        for entry in self.getEntries():
-            self.printEntry(entry)
+        print(self.getArticleList())
 
 reader = FeedReader('Das Wichtigste', 3).runTest()
