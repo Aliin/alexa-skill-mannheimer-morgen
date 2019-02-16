@@ -14,8 +14,7 @@ class MockSearch:
     def mock_result(self):
         print(self.user_id)
         print(self.search_url)
-        result = json.dumps(self.mock_data)
-        print(result)
+        result = self.mock_data
         return result
 
     def run_test(self):

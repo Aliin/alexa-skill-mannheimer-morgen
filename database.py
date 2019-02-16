@@ -20,5 +20,5 @@ class TestDB:
     def drop_user_tags(self):
         self.connection.execute('''DROP TABLE user_tags''')
 
-    def last_row(self):
+    def user_tags(self):
         return self.connection.execute('''SELECT * FROM user_tags''')
