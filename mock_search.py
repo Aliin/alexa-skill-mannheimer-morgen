@@ -8,6 +8,7 @@ class MockSearch:
         self.term = search_term
         self.user_id = user_id
         self.search_url = f'https://www.morgenweb.de/suche_cosearch,{self.term}.html'
+        self.save_search()
 
     def mock_result(self):
         print(self.user_id)
@@ -18,5 +19,8 @@ class MockSearch:
 
     def run_test(self):
         print(self.mock_result())
+
+    def save_search(self):
+        print(f'mock saved the search for {self.term} of user {self.user_id}')
 
 MockSearch('trump', 'uuid00001').mock_result()
