@@ -33,7 +33,6 @@ def launched():
         return question(speech).display_render(template="BodyTemplate6", text=text,
                                                background_image_url=background,
                                                hintText=hint)
-    return question(speech).reprompt(respeech)
 
 @ask.intent("NewsIntent")
 def news(search):
@@ -94,12 +93,24 @@ def events(datum, plz, ort, suche):
             return statement(speech).display_render(template="BodyTemplate6",
                                                     text=text, background_image_url=background)
 
+@ask.intent("AboIntent")
+def abo():
+    speech = render_template("abo")
+    return statement(speech)
+
 @ask.intent("SuggestionIntent")
 def suggestion():
     news_raw_data = suggested_news.SuggestedNews(session.user.userId).mock_result()
     if news_raw_data:
         news = create_string_of(news_raw_data)
         speech = render_template("news", news=news)
+        if context.System.device.supportedInterfaces.Display is None:
+            return statement(speech)
+        else:
+            title = render_template("title_news")
+            items = get_news_items(news_raw_data)
+            return statement(speech).list_display_render(template="ListTemplate1", backButton="HIDDEN",
+                                                         title=title, listItems=items)
     else:
         speech = render_template("no_suggestions")
     return statement(speech)

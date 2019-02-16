@@ -26,3 +26,4 @@ help: "Der Mannheimer Morgen informiert dich über aktuelle lokale Events und Na
 help_respeech: "Sage beispielsweise: Was läuft heute in der Oper in Mannheim?"
 fallback: "Ich habe Dich leider nicht verstanden. Frage den Mannheimer Morgen beispielsweise was die neuesten Nachrichten sind. Was möchtest Du wissen?"
 fallback_respeech: "Frage beispielsweise: Was läuft heute im Theater in Mannheim?"
+abo: "Du kannst mit einem Mannheimer Morgen Abonnement unter Anderem auf alle Artikel auf voller Länge zugreifen und werbefrei Inhalte genießen, favorisieren, um später darauf zuzugreifen. Du kannst mit einem kostenlosen Probemonat beginnen und später entscheiden ob du die Leichtigkeit beibehalten möchtest."
