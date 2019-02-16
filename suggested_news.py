@@ -19,8 +19,11 @@ class SuggestedNews:
         print(self.user_id)
         print(self.search_url)
         print(self.search_term)
-        result = self.mock_data.get(self.search_term, False) or 'no results for this term'
-        return result
+        if self.search_term:
+            result = self.mock_data.get(self.search_term, False)
+            return result
+        else
+        return False
 
     def find_latest_tag(self):
         rows = database.TestDB().user_tags().fetchall()
@@ -29,5 +32,8 @@ class SuggestedNews:
             if row[1] == self.user_id:
                 if self.mock_data.get(row[2], False):
                     res_list.append(row[2])
-        return(res_list[-1])
+        if res_list:
+            return(res_list[-1])
+        else:
+            return False
 
