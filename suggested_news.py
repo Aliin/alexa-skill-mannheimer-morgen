@@ -27,6 +27,7 @@ class SuggestedNews:
         res_list = []
         for row in rows:
             if row[1] == self.user_id:
-                res_list.append(row[2])
+                if self.mock_data.get(row[2], False):
+                    res_list.append(row[2])
         return(res_list[-1])
 
