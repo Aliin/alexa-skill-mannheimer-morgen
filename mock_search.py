@@ -1,20 +1,23 @@
-from requests_html import HTMLSession
+import urllib3
+from bs4 import BeautifulSoup
 import database
 import pdb
+import re
+import certifi
 
 class MorgenProvider:
     def __init__(self, url):
-        self.session = HTMLSession()
         try:
-            self.content = self.session.get(url)
+            http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+            self.content = http_pool.request('GET',url).data.decode('utf-8')
+            self.soup = BeautifulSoup(self.content, 'html.parser')
         except:
             self.content = False
-
 
     def result_titles(self):
         if self.content:
             try:
-                return self.content.html.find('.nfy-search-item h2')[:2]
+                return self.soup.select('.nfy-search-item h2')[:2]
             except:
                 return False
         else:
@@ -23,7 +26,7 @@ class MorgenProvider:
     def result_descriptions(self):
         if self.content:
             try:
-                return self.content.html.find('.nfy-search-item p')[:2]
+                return self.soup.select('.nfy-search-item p')[:2]
             except:
                 return False
         else:
@@ -35,12 +38,12 @@ class MorgenProvider:
             return False
         for index, item in enumerate(self.result_titles()):
             try:
-                data[index]['title'] = item.text
+                data[index]['title'] = item.contents[0]
             except:
                 next
         for index, item in enumerate(self.result_descriptions()):
             try:
-                data[index]['summary'] = item.text
+                data[index]['summary'] = item.contents[0]
             except:
                 next
         return data
@@ -48,8 +51,8 @@ class MorgenProvider:
     def third_item(self):
         try:
             item_data = [{
-                'title': self.content.html.find('.nfy-search-item h2')[3].text,
-                'summary': self.content.html.find('.nfy-search-item p')[3].text
+                'title': self.soup.select('.nfy-search-item h2')[3].contents[0],
+                'summary': self.soup.select('.nfy-search-item p')[3].contents[0]
                 }]
             return item_data
         except:
@@ -59,7 +62,7 @@ class MockSearch:
     # Class Name is not accurate anymore: The search is real now.
 
     def __init__(self, search_term, user_id):
-        self.term = search_term
+        self.term = re.sub('\s+', '+', search_term)
         self.user_id = user_id
         self.search_url = f'https://www.morgenweb.de/suche_cosearch,{self.term}.html'
         self.save_search()
