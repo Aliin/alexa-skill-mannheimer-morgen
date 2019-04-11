@@ -1,9 +1,11 @@
 import urllib3
 from bs4 import BeautifulSoup
-import database
 import pdb
 import re
 import certifi
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
 
 class MorgenProvider:
     def __init__(self, url):
@@ -72,11 +74,10 @@ class MockSearch:
         return result or False
 
     def save_search(self):
-        connection = database.TestDB().connection
-
-        sql = ''' INSERT INTO user_tags(USER_UUID, TAG)
-              VALUES(?,?) '''
-        connection.execute(sql, (self.user_id, self.term))
-
-        connection.commit()
-        connection.close()
+        table = dynamodb.Table('user_tags')
+        table.put_item(
+            Item={
+                'uuid': self.user_id,
+                'tag': self.term
+            }
+        )

@@ -1,5 +1,7 @@
-import database
 import mock_search
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
 
 class SuggestedNews:
     def __init__(self, user_id):

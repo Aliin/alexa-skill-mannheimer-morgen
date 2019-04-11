@@ -1,10 +1,12 @@
+pip==9.0.1
 flask
 flask-ask
 requests
 feedparser
-pip==9.0.1
 beautifulsoup4
 urllib3
 certifi
 zappa
+pyyaml
 awscli
+boto3
